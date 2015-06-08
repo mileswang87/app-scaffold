@@ -35,9 +35,14 @@ if (env === 'development') {
   app.use(express.static(path.resolve(__dirname, '../vendor/')));
   app.use(express.static(path.resolve(__dirname, '../bower_components/')));
 }
+// throw 404 for missing partials or assets
+app.use(/\/app|\/assets/, function(req, res){
+  res.status(404).send('Sorry, we cannot find that!');
+});
 
-
+// api routing
 app.use('/api/', api);
+
 app.use("*", function(req, res){
   res.sendFile('index.html', {root: './client'})
 });
