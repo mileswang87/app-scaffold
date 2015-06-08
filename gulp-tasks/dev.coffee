@@ -2,23 +2,7 @@ del = require "del"
 path = require "path"
 wiredep = require("wiredep").stream
 
-###
-  TODO
-  1. watch SCSS => sass() => concat() =>
-  2. watch coffee => webpack =>
-###
-scss =
-  source: './client/scss/**/*.scss'
-  base: './client/scss'
-  tmp: './tmp/assets/stylesheets'
 
-webpackOptions =
-  debug: true
-  devtool: "#source-map"
-  watchDelay: 200
-webpackConfig =
-  useMemoryFs: true
-  progress: true
 
 module.exports = (gulp, plugins, cfg) ->
   $$ = plugins
@@ -34,12 +18,12 @@ module.exports = (gulp, plugins, cfg) ->
     )
 
   gulp.task "watch:scss", (cb) ->
-    $$.watch scss.source,
-      base: scss.base
+    $$.watch cfg.scss.source,
+      base: cfg.scss.base
       verbose: true
       ignoreInitial: false
     , batch(() ->
-        gulp.src scss.source
+        gulp.src cfg.scss.source
         .pipe $$.sourcemaps.init()
         .pipe $$.sass
           errLogToConsole: true
@@ -47,7 +31,7 @@ module.exports = (gulp, plugins, cfg) ->
         .pipe $$.concat('main.css')
         .pipe $$.sourcemaps.write './',
           sourceRoot: "/scss/"
-        .pipe gulp.dest(scss.tmp)
+        .pipe gulp.dest(cfg.scss.tmp)
         .on 'end', () ->
           if cb
             cb()
@@ -60,8 +44,8 @@ module.exports = (gulp, plugins, cfg) ->
     , (event) ->
       gulp.src event.path
       .pipe webpack.closest('webpack.config.js')
-      .pipe webpack.init(webpackConfig)
-      .pipe webpack.props(webpackOptions)
+      .pipe webpack.init(cfg.webpackBuildConfig)
+      .pipe webpack.props(cfg.webpackDevOptions)
       .pipe webpack.watch (err, stats) ->
         gulp.src @path
         .pipe webpack.proxy(err, stats)
@@ -104,6 +88,10 @@ module.exports = (gulp, plugins, cfg) ->
     .pipe gulp.dest("./client")
 
   gulp.task 'develop', ['inject'], () ->
-    ###
-  TODO
-###
+    $$.nodemon
+      script: './server/bin/www'
+      watch: ['server/']
+      ext: 'js json'
+      env: { 'NODE_ENV': 'development' }
+    .on 'start', () ->
+      log($$.util.colors.green('Server start successful'));

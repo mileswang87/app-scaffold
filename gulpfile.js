@@ -5,8 +5,21 @@ require('coffee-script/register');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
-var cfg = {};
+var cfg = {
+  scss: {
+    source: './client/scss/**/*.scss',
+    base: './client/scss',
+    tmp: './tmp/assets/stylesheets'
+  },
+  webpackDevOptions: {
+    debug: true,
+    devtool: "#source-map",
+    watchDelay: 200
+  },
+  webpackBuildConfig: {
+    useMemoryFs: true,
+    progress: true
+  }
+};
 
 require('./gulp-tasks/dev')(gulp, plugins, cfg);
-//require('./gulp-tasks/build')(gulp, plugins, cfg);
-//require('./gulp-tasks/webpack')(gulp, plugins, cfg);
