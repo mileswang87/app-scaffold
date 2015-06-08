@@ -3,8 +3,7 @@ coverage/
 bower_components/
 node_modules/
 npm-debug.log
-server/log/*.log
-user.log
+log/*.log
 
 build/
 build/user.log

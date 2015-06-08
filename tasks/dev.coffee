@@ -68,6 +68,7 @@ module.exports = (gulp, plugins, cfg) ->
   gulp.task 'inject',[
     'watch:scss'
     'watch:webpack'
+    'wiredep'
   ], () ->
     appSrc = gulp.src [
       './tmp/**/*.js'

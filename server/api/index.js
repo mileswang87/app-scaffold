@@ -12,4 +12,11 @@ router.get('/', function(req, res, next) {
   })
 });
 
+/* throw 404 error*/
+router.use(function(req, res){
+  res.status(404).json({
+    "error":"No such api"
+  })
+});
+
 module.exports = router;
