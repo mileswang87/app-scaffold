@@ -22,4 +22,4 @@ var cfg = {
   }
 };
 
-require('./gulp-tasks/dev')(gulp, plugins, cfg);
+require('./tasks/dev')(gulp, plugins, cfg);

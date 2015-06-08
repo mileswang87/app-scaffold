@@ -28,7 +28,7 @@ module.exports = (gulp, plugins, cfg) ->
         .pipe $$.sass
           errLogToConsole: true
         .pipe $$.autoprefixer()
-        .pipe $$.concat('main.css')
+        .pipe $$.concat('app.css')
         .pipe $$.sourcemaps.write './',
           sourceRoot: "/scss/"
         .pipe gulp.dest(cfg.scss.tmp)

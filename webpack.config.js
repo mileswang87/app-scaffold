@@ -6,7 +6,7 @@ var path = require('path');
 
 module.exports = {
   context: __dirname + "/client/app",
-  entry: "./entry.coffee",
+  entry: "./entry.js",
   output: {
     path: __dirname,
     filename: "app.js"
@@ -22,8 +22,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.coffee$/, loader: "coffee" },
-      { test: /\.html/, loader: "html?attrs=false" },
-      { test: /\.yaml/, loader: "json!yaml" }
+      { test: /\.html/, loader: "html?attrs=false" }
     ]
   }
 };
