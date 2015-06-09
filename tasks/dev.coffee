@@ -3,7 +3,6 @@ path = require "path"
 wiredep = require("wiredep").stream
 
 
-
 module.exports = (gulp, plugins, cfg) ->
   $$ = plugins
   log = $$.util.log
