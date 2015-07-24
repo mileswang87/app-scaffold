@@ -13,8 +13,5 @@
     "tests"
   ],
   "dependencies": {
-    "angular-ui-router": "~0.2.15",
-    "angular": "~1.4.0",
-    "normalize.css": "~3.0.3"
   }
 }

@@ -16,9 +16,6 @@ module.exports = {
       ON_TEST: process.env.NODE_ENV === 'test'
     })
   ],
-  externals: {
-    angularjs: "angular"
-  },
   module: {
     loaders: [
       { test: /\.coffee$/, loader: "coffee" },
