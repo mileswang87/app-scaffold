@@ -8,7 +8,12 @@ var cfg = {
   scss: {
     source: './client/scss/**/*.scss',
     base: './client/scss',
-    tmp: './tmp/assets/stylesheets'
+    tmp: './tmp/assets/stylesheets',
+    order: [
+      'base/base.css',
+      'base/**/*.css',
+      '**/*.css'
+    ]
   },
   webpackDevOptions: {
     debug: true,

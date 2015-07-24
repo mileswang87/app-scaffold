@@ -26,6 +26,8 @@ module.exports = (gulp, plugins, cfg) ->
     gulp.src cfg.scss.source
     .pipe $$.sass()
     .pipe $$.autoprefixer()
+    .pipe $$.order cfg.scss.order
+    .pipe $$.concat 'app.css'
     .pipe gulp.dest(cfg.scss.tmp)
 
   gulp.task "build:webpack", () ->
@@ -62,25 +64,26 @@ module.exports = (gulp, plugins, cfg) ->
       relative: true
     .pipe gulp.dest("./build/client")
 
-  gulp.task "build:wiredep", [
-    "build:base"
-    "build:inject"
-  ], () ->
-    gulp.src('./build/client/index.html')
-    .pipe wiredep()
-    .pipe gulp.dest('./build/client')
+#  gulp.task "build:wiredep", [
+#    "build:base"
+#    "build:inject"
+#  ], () ->
+#    gulp.src('./build/client/index.html')
+#    .pipe wiredep()
+#    .pipe gulp.dest('./build/client')
 
   gulp.task "build:usemin", [
     'build:base'
-    'build:wiredep'
+    'build:inject'
+#    'build:wiredep'
   ], () ->
     gulp.src './build/client/index.html'
-    .pipe $$.usemin()
-#        libcss: [$$.minifyCss(),$$.rev()]
-#        maincss: [$$.minifyCss(),$$.rev()]
-#        libjs: [$$.uglify(),$$.rev()]
-#        appjs: [$$.uglify(),$$.rev()]
-#    .on "error", log
+    .pipe $$.usemin
+        libcss: [$$.minifyCss(),$$.rev()]
+        maincss: [$$.minifyCss(),$$.rev()]
+        libjs: [$$.uglify(),$$.rev()]
+        appjs: [$$.uglify(),$$.rev()]
+    .on "error", log
     .pipe gulp.dest('./build/client')
 
   gulp.task 'build:copy', [ 'build:base' ], ->
@@ -94,7 +97,6 @@ module.exports = (gulp, plugins, cfg) ->
 
   gulp.task 'build', [
     'build:base'
-    'build:wiredep'
     'build:inject'
     'build:usemin'
     'build:copy'

@@ -1,5 +1,5 @@
 
-var angular = require("angularjs");
+var angular = require("angular");
 require('angular-ui-router');
 var app = angular.module("applicationName", ['ui.router']);
 

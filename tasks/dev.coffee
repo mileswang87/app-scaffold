@@ -21,13 +21,14 @@ module.exports = (gulp, plugins, cfg) ->
       base: cfg.scss.base
       verbose: true
       ignoreInitial: false
-    , batch(() ->
+    , batch( ->
         gulp.src cfg.scss.source
         .pipe $$.sourcemaps.init()
         .pipe $$.sass
           errLogToConsole: true
         .pipe $$.autoprefixer()
-        .pipe $$.concat('app.css')
+        .pipe $$.order cfg.scss.order
+        .pipe $$.concat 'app.css'
         .pipe $$.sourcemaps.write './',
           sourceRoot: "/scss/"
         .pipe gulp.dest(cfg.scss.tmp)
@@ -57,17 +58,17 @@ module.exports = (gulp, plugins, cfg) ->
             cb()
             cb = null
 
-  gulp.task 'wiredep', () ->
-    gulp.src './client/index.html'
-    .pipe wiredep(
-      ignorePath: "../bower_components/"
-    )
-    .pipe gulp.dest('./client')
+#  gulp.task 'wiredep', () ->
+#    gulp.src './client/index.html'
+#    .pipe wiredep(
+#      ignorePath: "../bower_components/"
+#    )
+#    .pipe gulp.dest('./client')
 
   gulp.task 'inject',[
     'watch:scss'
     'watch:webpack'
-    'wiredep'
+#    'wiredep'
   ], () ->
     appSrc = gulp.src [
       './tmp/**/*.js'
@@ -87,11 +88,15 @@ module.exports = (gulp, plugins, cfg) ->
       ignorePath: ["client/","tmp/"])
     .pipe gulp.dest("./client")
 
-  gulp.task 'develop', ['inject'], () ->
+  gulp.task 'develop',['inject'] , (done) ->
     $$.nodemon
       script: './server/bin/www'
       watch: ['server/']
       ext: 'js json'
       env: { 'NODE_ENV': 'development' }
     .on 'start', () ->
-      log($$.util.colors.green('Server start successful'));
+      log($$.util.colors.green('Server start successful'))
+    .on 'exit', 'dev:clean'
+    .on 'exit', ->
+      done()
+
